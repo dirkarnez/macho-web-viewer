@@ -34,7 +34,9 @@ jobs:
       
       - run: copy "%GOROOT%\misc\wasm\wasm_exec.js" build-webassembly\
         shell: cmd
-    
+
+      - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+      
       - name: Archive Release (win64)
         uses: thedoctor0/zip-release@master
         with:
