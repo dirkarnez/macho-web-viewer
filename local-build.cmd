@@ -7,4 +7,4 @@ SET GOARCH=wasm
 
 go build -o build-webassembly\main.wasm  .\webassembly\main_js.go
 
-copy "%GOROOT%misc\wasm\wasm_exec.js" build-webassembly\
+copy "%GOROOT%\misc\wasm\wasm_exec.js" build-webassembly\

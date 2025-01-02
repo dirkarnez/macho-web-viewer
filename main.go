@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -12,7 +13,7 @@ import (
 // 	return noExtension[strings.LastIndex(noExtension, "\\")+1:]
 // }
 
-func convertCafToMidi_Desktop(filePath string) string {
+func readMacho_Desktop(filePath string) string {
 	f, err := os.Open(filePath)
 	if err != nil {
 		panic(err)
@@ -29,7 +30,7 @@ func convertCafToMidi_Desktop(filePath string) string {
 
 func main() {
 	if len(os.Args) == 2 {
-		convertCafToMidi_Desktop(os.Args[1:2][0])
+		fmt.Println(readMacho_Desktop(os.Args[1:2][0]))
 	} else {
 		log.Fatal("please drag a file")
 	}
