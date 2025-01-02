@@ -1,10 +1,8 @@
-module github.com/dirkarnez/caf-to-midi
+module github.com/dirkarnez/macho-web-viewer
 
-go 1.15
+go 1.21.0
 
 require (
-	github.com/pascoej/caf v0.0.0-20200610075659-4ec84a97b3fd
-	github.com/sirupsen/logrus v1.7.0 // indirect
+	github.com/blacktop/go-dwarf v1.0.10 // indirect
+	github.com/blacktop/go-macho v1.1.234 // indirect
 )
-
-replace github.com/pascoej/caf v0.0.0-20200610075659-4ec84a97b3fd => github.com/dirkarnez/caf v0.0.0-20210201083420-f78db8c979fc

@@ -6,33 +6,27 @@ package main
 //go:generate cp $GOROOT/misc/wasm/wasm_exec.js .
 
 import (
-	"path/filepath"
-	"strings"
+	"bytes"
 	"syscall/js"
 
-	dirkCaf "github.com/dirkarnez/caf-to-midi/caf"
+	goMacho "github.com/blacktop/go-macho"
 )
 
-func GetFileName(path string) string {
-	noExtension := strings.TrimSuffix(path, filepath.Ext(path))
-	return noExtension[strings.LastIndex(noExtension, "\\")+1:]
-}
-
-func convertCafToMidi_JavaScript(this js.Value, args []js.Value) interface{} {
+func readMacho_JavaScript(this js.Value, args []js.Value) interface{} {
 	buffer := make([]byte, args[0].Length())
 
 	js.CopyBytesToGo(buffer, args[0])
 
-	// 计算md5的值
-	bytes, _ := dirkCaf.ConvertCafToMidi(buffer)
+	reader := bytes.NewReader(buffer)
+	m, err := goMacho.NewFile(reader)
+	if err != nil {
+		panic(err)
+	}
 
-	dst := js.Global().Get("Uint8Array").New(len(bytes))
-	js.CopyBytesToJS(dst, bytes)
-
-	return dst
+	return m.FileTOC.String()
 }
 
 func main() {
-	js.Global().Set("convertCafToMidiGo", js.FuncOf(convertCafToMidi_JavaScript))
+	js.Global().Set("readMachoGo", js.FuncOf(readMacho_JavaScript))
 	select {} // block the main thread forever
 }

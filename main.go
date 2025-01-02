@@ -1,39 +1,30 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
-	"path/filepath"
-	"strings"
 
-	dirkCaf "github.com/dirkarnez/caf-to-midi/caf"
+	goMacho "github.com/blacktop/go-macho"
 )
 
-func GetFileName(path string) string {
-	noExtension := strings.TrimSuffix(path, filepath.Ext(path))
-	return noExtension[strings.LastIndex(noExtension, "\\")+1:]
-}
+// func GetFileName(path string) string {
+// 	noExtension := strings.TrimSuffix(path, filepath.Ext(path))
+// 	return noExtension[strings.LastIndex(noExtension, "\\")+1:]
+// }
 
-func convertCafToMidi_Desktop(filePath string) {
-	contents, err := ioutil.ReadFile(filePath)
+func convertCafToMidi_Desktop(filePath string) string {
+	f, err := os.Open(filePath)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
+	}
+	defer f.Close()
+
+	m, err := goMacho.NewFile(f)
+	if err != nil {
+		panic(err)
 	}
 
-	out, err := dirkCaf.ConvertCafToMidi(contents)
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-
-	file, err := os.Create(GetFileName(filePath) + ".mid")
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	defer file.Close()
-	file.Write(out)
+	return m.FileTOC.String()
 }
 
 func main() {
