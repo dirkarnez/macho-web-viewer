@@ -3,3 +3,5 @@
 *.exe
 *.wasm
 wasm_exec.js
+!build-webassembly/main.wasm
+!build-webassembly/wasm_exec.js
