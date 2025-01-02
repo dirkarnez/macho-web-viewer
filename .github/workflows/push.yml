@@ -13,12 +13,11 @@ jobs:
       targetWebAssemblyZip: ${{ github.event.repository.name }}-${{ github.ref_name }}-wasm.zip
     steps:
       - uses: actions/checkout@v4
-      
+          
       - name: Setup go
         uses: actions/setup-go@v2
         with:
           go-version: '1.21.0' # The Go version to download (if necessary) and use.
-          
           
       - run: go get .
       
@@ -34,11 +33,7 @@ jobs:
       
       - run: copy "%GOROOT%\misc\wasm\wasm_exec.js" build-webassembly\
         shell: cmd
-
-      - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
-        with:
-          tag: '${{ github.ref_name }}'
-      
+          
       - name: Archive Release (win64)
         uses: thedoctor0/zip-release@master
         with:
@@ -59,3 +54,15 @@ jobs:
           artifacts: "${{ env.targetWin64Zip }},build-webassembly/${{ env.targetWebAssemblyZip }}"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v4
+        with:
+          ref: 'main'
+          path: '${{ github.event.repository.name }}-main'
+          
+      - run: copy "%GOROOT%\misc\wasm\wasm_exec.js" '${{ github.event.repository.name }}-main\build-webassembly\'
+        shell: cmd
+
+      - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+        with:
+          cwd: '${{ github.event.repository.name }}-main'
