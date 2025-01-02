@@ -36,6 +36,8 @@ jobs:
         shell: cmd
 
       - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+        with:
+          tag: '${{ github.ref_name }}'
       
       - name: Archive Release (win64)
         uses: thedoctor0/zip-release@master
