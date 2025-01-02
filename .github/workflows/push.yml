@@ -55,14 +55,11 @@ jobs:
         with:
           ref: 'main'
           path: '${{ github.event.repository.name }}-main'
-
-      - shell: cmd
-        run: |
-          cd /d "${{ github.event.repository.name }}-main" &&^
-          dir
           
       - shell: cmd
-        run: copy "%GOROOT%\misc\wasm\wasm_exec.js" "${{ github.event.repository.name }}-main\build-webassembly\"
+        run: |
+          copy "%GOROOT%\misc\wasm\wasm_exec.js" "${{ github.event.repository.name }}-main\build-webassembly\" &&^
+          copy "build-webassembly\main.wasm" "${{ github.event.repository.name }}-main\build-webassembly\"
 
       - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
         with:
